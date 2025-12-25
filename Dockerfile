@@ -1,4 +1,4 @@
-ARG ALPINE_VERSION=3.21
+ARG ALPINE_VERSION=latest
 FROM alpine:${ALPINE_VERSION}
 
 # Build arguments
@@ -8,7 +8,7 @@ ARG NGINX_VERSION
 ARG PHP_VERSION=84
 
 # Metadata labels
-LABEL maintainer="rizkikotet-dev <rizkidhc31@gmail.com>" \
+LABEL maintainer="lucienmakutano <lucienprogrammer@gmail.com>" \
       description="Lightweight container with Nginx & PHP based on Alpine Linux." \
       version="${VERSION}" \
       build-date="${BUILD_DATE}" \

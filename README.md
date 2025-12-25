@@ -2,56 +2,56 @@
 
 ![Mikhmon Logo](https://raw.githubusercontent.com/laksa19/laksa19.github.io/master/img/mikhmonv3.png)
 
-Mikhmon-Docker adalah implementasi Docker untuk Mikhmon (MikroTik Hotspot Monitor), sebuah aplikasi berbasis PHP untuk monitoring dan manajemen hotspot MikroTik.
+Mikhmon-Docker is a Docker implementation for Mikhmon (MikroTik Hotspot Monitor), a PHP-based application for monitoring and managing MikroTik hotspots.
 
-## Tentang Project
+## About the Project
 
-Mikhmon-Docker mengemas aplikasi [Mikhmon](https://laksa19.github.io/?mikhmon/v3) dalam container Docker, memudahkan instalasi dan penggunaan Mikhmon tanpa perlu mengonfigurasi lingkungan server web secara manual. Project ini memungkinkan Anda untuk:
+Mikhmon-Docker packages the [Mikhmon](https://laksa19.github.io/?mikhmon/v3) application in a Docker container, making it easy to install and use Mikhmon without manually configuring a web server environment. This project allows you to:
 
-- Menjalankan Mikhmon di lingkungan terisolasi
-- Memudahkan deployment di berbagai platform
-- Mempertahankan data konfigurasi dengan volume Docker
-- Mengakses Mikhmon dari browser web di port yang telah dikonfigurasi
+- Run Mikhmon in an isolated environment
+- Simplify deployment across various platforms
+- Maintain configuration data with Docker volumes
+- Access Mikhmon from a web browser on the configured port
 
-## Fitur
+## Features
 
-- **Manajemen Hotspot**: Monitor dan kelola pengguna hotspot MikroTik
-- **Manajemen Voucher**: Buat dan cetak voucher hotspot
-- **Dashboard Informatif**: Lihat statistik dan informasi pengguna
-- **Manajemen Pengguna**: Tambah, edit, dan hapus akun pengguna
-- **Laporan**: Akses laporan penggunaan dan pendapatan
-- **Multi-Router**: Kelola beberapa router MikroTik dalam satu aplikasi
-- **Konfigurasi Persisten**: Data tersimpan dalam volume Docker
+- **Hotspot Management**: Monitor and manage MikroTik hotspot users
+- **Voucher Management**: Create and print hotspot vouchers
+- **Informative Dashboard**: View statistics and user information
+- **User Management**: Add, edit, and delete user accounts
+- **Reports**: Access usage and revenue reports
+- **Multi-Router**: Manage multiple MikroTik routers in one application
+- **Persistent Configuration**: Data stored in Docker volumes
 
-## Persyaratan
+## Requirements
 
-- Docker dan Docker Compose terinstal
-- Koneksi jaringan ke router MikroTik
-- Router MikroTik dengan API yang diaktifkan
+- Docker and Docker Compose installed
+- Network connection to MikroTik router
+- MikroTik router with API enabled
 
-## Penggunaan
+## Usage
 
-### Metode Quick Start
+### Quick Start Method
 
-1. Clone repository ini:
+1. Clone this repository:
    ```bash
    git clone https://github.com/rizkikotet-dev/mikhmon-docker.git
    cd mikhmon-docker
    ```
 
-2. Jalankan dengan Docker Compose:
+2. Run with Docker Compose:
    ```bash
    docker-compose up -d
    ```
 
-3. Akses Mikhmon melalui browser:
+3. Access Mikhmon via browser:
    ```
    http://localhost:80
    ```
 
-### Konfigurasi Docker Compose ( **Rekomendasi** )
+### Docker Compose Configuration ( **Recommended** )
 
-File `docker-compose.yml` yang tersedia:
+Available `docker-compose.yml` file:
 ```yaml
 services:
   mikhmon:
@@ -68,22 +68,22 @@ services:
       - TZ=Asia/Jakarta
 ```
 
-### Konfigurasi Awal Mikhmon
+### Initial Mikhmon Configuration
 
-1. Setelah mengakses Mikhmon melalui browser, Anda akan melihat halaman login.
-2. Gunakan kredensial default:
+1. After accessing Mikhmon through your browser, you will see the login page.
+2. Use the default credentials:
    - Username: `mikhmon`
    - Password: `1234`
-3. Ubah password default segera setelah login pertama.
-4. Tambahkan router MikroTik dengan mengklik "Add Router":
-   - Masukkan nama untuk router
-   - Masukkan alamat IP router
-   - Masukkan username dan password API
-   - Klik "Save"
+3. Change the default password immediately after the first login.
+4. Add a MikroTik router by clicking "Add Router":
+   - Enter a name for the router
+   - Enter the router's IP address
+   - Enter the API username and password
+   - Click "Save"
 
-## Pembaruan
+## Updates
 
-Untuk memperbarui ke versi terbaru:
+To update to the latest version:
 
 ```bash
 docker-compose down
@@ -93,22 +93,22 @@ docker-compose up -d --build
 
 ## Troubleshooting
 
-- **Tidak dapat terhubung ke Mikhmon**: Pastikan port 80 tidak digunakan oleh aplikasi lain
-- **Tidak dapat terhubung ke router**: Verifikasi bahwa API MikroTik diaktifkan dan kredensial benar
+- **Cannot connect to Mikhmon**: Make sure port 80 is not being used by another application
+- **Cannot connect to router**: Verify that the MikroTik API is enabled and credentials are correct
 
-## Referensi dan Sumber
+## References and Sources
 
-Mikhmon dikembangkan oleh laksa19: [https://laksa19.github.io/?mikhmon/v3](https://laksa19.github.io/?mikhmon/v3)
+Mikhmon is developed by laksa19: [https://laksa19.github.io/?mikhmon/v3](https://laksa19.github.io/?mikhmon/v3)
 
-Project ini adalah implementasi Docker tidak resmi untuk memudahkan deployment Mikhmon.
+This project is an unofficial Docker implementation to facilitate Mikhmon deployment.
 
-## Kontribusi
+## Contributing
 
-Kontribusi sangat diterima! Silakan fork repository ini dan kirimkan pull request.
+Contributions are welcome! Please fork this repository and submit a pull request.
 
-## Lisensi
+## License
 
-Project ini dilisensikan di bawah [MIT License](LICENSE) dengan penghormatan ke proyek asli Mikhmon.
+This project is licensed under the [MIT License](LICENSE) with respect to the original Mikhmon project.
 
 ---
 

@@ -1,17 +1,78 @@
 services:
-  mikhmon:
-    container_name: Mikhmon
-    build: .
-    # image: rizkikotet/mikhmon:latest
+  traefik:
+    image: traefik:latest
+    container_name: traefik
     restart: unless-stopped
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencrypt.acme.email=makutanolucien@gmail.com"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
     ports:
       - "80:80"
+      - "443:443"
+      - "8080:8080"  # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik_certs:/letsencrypt
+    networks:
+      - mikhmon_network
+
+  mikhmon:
+    container_name: Innovar-Mikhmon
+    build: .
+    restart: unless-stopped
+    expose:
+      - "80"
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Asia/Jakarta
+      - TZ=Africa/Lubumbashi
     volumes:
       - mikhmon_data:/var/www/html
+      - mikhmon_sessions:/var/lib/php/sessions
+    networks:
+      - mikhmon_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/version-4/index.php" , "||", "exit", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - "com.mikhmon.description=MikroTik Hotspot Monitor"
+      - "com.mikhmon.version=4"
+      - "traefik.enable=true"
+      # HTTP to HTTPS redirect
+      - "traefik.http.routers.mikhmon-http.rule=Host(`mikhmon.innovartech.net`)"
+      - "traefik.http.routers.mikhmon-http.entrypoints=web"
+      - "traefik.http.routers.mikhmon-http.middlewares=https-redirect"
+      - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+      # HTTPS
+      - "traefik.http.routers.mikhmon-https.rule=Host(`mikhmon.innovartech.net`)"
+      - "traefik.http.routers.mikhmon-https.entrypoints=websecure"
+      - "traefik.http.routers.mikhmon-https.tls=true"
+      - "traefik.http.routers.mikhmon-https.tls.certresolver=letsencrypt"
+      - "traefik.http.services.mikhmon.loadbalancer.server.port=80"
 
 volumes:
   mikhmon_data:
+    driver: local
+  mikhmon_sessions:
+    driver: local
+  traefik_certs:
+    driver: local
+
+networks:
+  mikhmon_network:
+    driver: bridge
