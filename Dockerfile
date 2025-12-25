@@ -1,4 +1,4 @@
-ARG ALPINE_VERSION=latest
+ARG ALPINE_VERSION=3.21
 FROM alpine:${ALPINE_VERSION}
 
 # Build arguments
