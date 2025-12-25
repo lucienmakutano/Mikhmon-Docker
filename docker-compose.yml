@@ -3,9 +3,13 @@ services:
     image: traefik:latest
     container_name: traefik
     restart: unless-stopped
+    user: "0:103"  # Run as root with docker group to access socket
     command:
+      - "--log.level=DEBUG"
       - "--api.insecure=true"
       - "--providers.docker=true"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--providers.docker.watch=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
@@ -27,8 +31,8 @@ services:
     container_name: Innovar-Mikhmon
     build: .
     restart: unless-stopped
-    ports:
-      - "8000:80"  # Direct access via IP:8000
+    expose:
+      - "80"
     environment:
       - PUID=1000
       - PGID=1000
@@ -38,7 +42,7 @@ services:
     networks:
       - mikhmon_network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80/version-4/index.php" , "||", "exit", "1"]
+      test: ["CMD-SHELL", "curl -f http://localhost/version-4/ || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
