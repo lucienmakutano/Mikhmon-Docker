@@ -5,25 +5,17 @@ services:
     restart: unless-stopped
     user: "0:103"  # Run as root with docker group to access socket
     command:
-      - "--log.level=DEBUG"
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.endpoint=unix:///var/run/docker.sock"
       - "--providers.docker.watch=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
-      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.letsencrypt.acme.email=makutanolucien@gmail.com"
-      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
     ports:
       - "80:80"
-      - "443:443"
       - "8080:8080"  # Traefik dashboard
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - traefik_certs:/letsencrypt
     networks:
       - mikhmon_network
 
@@ -56,22 +48,12 @@ services:
       - "com.mikhmon.description=MikroTik Hotspot Monitor"
       - "com.mikhmon.version=4"
       - "traefik.enable=true"
-      # HTTP to HTTPS redirect
-      - "traefik.http.routers.mikhmon-http.rule=Host(`mikhmon.innovartech.net`)"
-      - "traefik.http.routers.mikhmon-http.entrypoints=web"
-      - "traefik.http.routers.mikhmon-http.middlewares=https-redirect"
-      - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
-      # HTTPS
-      - "traefik.http.routers.mikhmon-https.rule=Host(`mikhmon.innovartech.net`)"
-      - "traefik.http.routers.mikhmon-https.entrypoints=websecure"
-      - "traefik.http.routers.mikhmon-https.tls=true"
-      - "traefik.http.routers.mikhmon-https.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.mikhmon.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.mikhmon.entrypoints=web"
       - "traefik.http.services.mikhmon.loadbalancer.server.port=80"
 
 volumes:
   mikhmon_sessions:
-    driver: local
-  traefik_certs:
     driver: local
 
 networks:
