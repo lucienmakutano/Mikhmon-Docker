@@ -34,7 +34,6 @@ services:
       - PGID=1000
       - TZ=Africa/Lubumbashi
     volumes:
-      - mikhmon_data:/var/www/html
       - mikhmon_sessions:/var/lib/php/sessions
     networks:
       - mikhmon_network
@@ -66,8 +65,6 @@ services:
       - "traefik.http.services.mikhmon.loadbalancer.server.port=80"
 
 volumes:
-  mikhmon_data:
-    driver: local
   mikhmon_sessions:
     driver: local
   traefik_certs:
